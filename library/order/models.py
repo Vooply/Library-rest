@@ -18,12 +18,8 @@ class Order(models.Model):
         Magic method is redefined to show all information about Book.
         :return: book id, book name, book description, book count, book authors
         """
-        end_at = f"'{self.end_at}'" if self.end_at else None
 
-        return f"'id': {self.id}, 'user': {self.user.__class__.__name__}(id={self.user.id})," \
-               f" 'book': {self.book.__class__.__name__}(id={self.book.id}), " \
-               f"'created_at': '{self.created_at}', 'end_at': {end_at}, " \
-               f"'plated_end_at': '{self.plated_end_at}'"
+        return str(self.to_dict())[1:-1]
 
     def __repr__(self):
         """

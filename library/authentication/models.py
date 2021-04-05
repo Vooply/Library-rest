@@ -1,8 +1,11 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db import models, IntegrityError
 from django.db.utils import DataError
+
+from .managers import UserManager
 
 ROLE_CHOICES = (
     (0, 'visitor'),
@@ -10,7 +13,7 @@ ROLE_CHOICES = (
 )
 
 
-class CustomUser(AbstractBaseUser):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     """
         This class represents a basic user. \n
         Attributes:
@@ -35,31 +38,29 @@ class CustomUser(AbstractBaseUser):
         type is_active: bool
 
     """
+
     first_name = models.CharField(blank=True, max_length=20)
-    last_name = models.CharField(blank=True, max_length=20)
     middle_name = models.CharField(blank=True, max_length=20)
-    email = models.EmailField(unique=True, max_length=100, validators=[validate_email])
-    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    last_name = models.CharField(blank=True, max_length=20)
+    email = models.EmailField(max_length=100, unique=True, validators=[validate_email])
+    password = models.CharField(max_length=128)
     updated_at = models.DateTimeField(auto_now=True)
-    role = models.IntegerField(choices=ROLE_CHOICES, default=ROLE_CHOICES[0][0])
-    is_active = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    role = models.IntegerField(default=0, choices=ROLE_CHOICES)
+    is_active = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=False)
+
+    USERNAME_FIELD = 'email'
+    objects = UserManager()
 
     def __str__(self):
         """
         Magic method is redefined to show all information about CustomUser.
         :return: user id, user first_name, user middle_name, user last_name,
-                 user email, user password, user updated_at, user created_at,
+                 user email, user passwstr(self.to_dict())[1:-1]ord, user updated_at, user created_at,
                  user role, user is_active
         """
-        return f"'id': {self.id}, " \
-               f"'first_name': '{self.first_name}', " \
-               f"'middle_name': '{self.middle_name}', " \
-               f"'last_name': '{self.last_name}', " \
-               f"'email': '{self.email}', " \
-               f"'created_at': {int(self.created_at.timestamp())}, " \
-               f"'updated_at': {int(self.updated_at.timestamp())}, " \
-               f"'role': {self.role}, " \
-               f"'is_active': {self.is_active}"
+        return str(self.to_dict())[1:-1]
 
     def __repr__(self):
         """
@@ -155,7 +156,7 @@ class CustomUser(AbstractBaseUser):
             'first_name': self.first_name,
             'middle_name': self.middle_name,
             'last_name': self.last_name,
-            'email' : self.email,
+            'email': self.email,
             'created_at': int(self.created_at.timestamp()),
             'updated_at': int(self.updated_at.timestamp()),
             'role': self.role,
@@ -209,5 +210,4 @@ class CustomUser(AbstractBaseUser):
         """
         returns str role name
         """
-        role = ROLE_CHOICES[self.role][1]
-        return role
+        return self.get_role_display()

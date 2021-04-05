@@ -49,7 +49,7 @@ class TestCustomUserModel(TestCase):
                          "'created_at': 1491825600, " \
                          "'updated_at': 1491825600, " \
                          "'role': 0, " \
-                         "'is_active': False"
+                         "'is_active': True"
         self.assertEqual(user_returned, user_to_expect)
 
     def test__repr__(self):
@@ -71,7 +71,7 @@ class TestCustomUserModel(TestCase):
         self.assertEqual(user_returned.created_at, TEST_DATE)
         self.assertEqual(user_returned.updated_at, TEST_DATE)
         self.assertEqual(user_returned.role, 0)
-        self.assertEqual(user_returned.is_active, False)
+        self.assertEqual(user_returned.is_active, True)
 
     def test_get_by_id_negative(self):
         """Negative test of the CustomUser.get_by_id() method"""
@@ -89,7 +89,7 @@ class TestCustomUserModel(TestCase):
         self.assertEqual(user_returned.last_name, 'lname')
         self.assertEqual(user_returned.created_at, TEST_DATE)
         self.assertEqual(user_returned.updated_at, TEST_DATE)
-        self.assertEqual(user_returned.is_active, False)
+        self.assertEqual(user_returned.is_active, True)
 
     def test_get_by_email_negative(self):
         """Negative test of the CustomUser.get_by_email() method"""
@@ -119,7 +119,7 @@ class TestCustomUserModel(TestCase):
             self.assertEqual(user_returned.created_at, TEST_DATE)
             self.assertEqual(user_returned.updated_at, TEST_DATE)
             self.assertEqual(user_returned.role, 0)
-            self.assertEqual(user_returned.is_active, False)
+            self.assertEqual(user_returned.is_active, True)
 
     def test_create_negative_long_first_name(self):
         """ Negative Test of the CustomUser.create() method """
@@ -163,7 +163,7 @@ class TestCustomUserModel(TestCase):
                           'created_at': 1491825600,
                           'updated_at': 1491825600,
                           'role': 0,
-                          'is_active': False}
+                          'is_active': True}
         self.assertEqual(user_returned.to_dict(), user_to_expect)
 
     def test_update_full(self):
