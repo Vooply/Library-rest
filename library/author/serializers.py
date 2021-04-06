@@ -12,4 +12,4 @@ class AuthorDetailSerializer(serializers.ModelSerializer):
 class AuthorListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ('id', 'name', 'surname', 'user')
+        fields = ('id', 'name', 'surname', 'patronymic', 'user')
