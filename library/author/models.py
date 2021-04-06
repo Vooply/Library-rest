@@ -1,5 +1,7 @@
 from django.db import models, IntegrityError, DataError
 
+from django.contrib.auth import get_user_model
+user = get_user_model()
 
 class Author(models.Model):
     """
@@ -17,6 +19,7 @@ class Author(models.Model):
     name = models.CharField(blank=True, max_length=20)
     surname = models.CharField(blank=True, max_length=20)
     patronymic = models.CharField(blank=True, max_length=20)
+    user = models.ForeignKey(user, on_delete=models.CASCADE)
 
     def __str__(self):
         """
