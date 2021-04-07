@@ -2,15 +2,13 @@ from rest_framework import serializers
 from .models import Author
 
 
-class AuthorDetailSerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+class AuthorSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Author
-        fields = ('id', 'name', 'surname', 'patronymic', 'user')
+        fields = ('url', 'name', 'surname', 'patronymic', 'author_books')
+        extra_kwargs = {
+            'author_books': {'view_name': 'book:book_detail'},
+            'url': {'view_name': 'author:author_detail'},
+        }
 
-
-class AuthorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Author
-        fields = '__all__'

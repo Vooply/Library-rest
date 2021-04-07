@@ -6,5 +6,5 @@ app_name = 'author'
 urlpatterns = [
     path('create/', AuthorCreateView.as_view(), name='create_author'),
     path('', AuthorListView.as_view(), name='list_author'),
-    path('<int:pk>', AuthorUpdateView.as_view(), name='author-detail'),
+    path('<int:pk>', AuthorUpdateView.as_view(), name='author_detail'),
 ]

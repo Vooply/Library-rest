@@ -114,7 +114,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
 }
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -160,7 +162,9 @@ LOGGING = {
         },
     },
 }
+LOGIN_REDIRECT_URL = 'book:book_list'
+LOGOUT_REDIRECT_URL = 'book:book_list'
 try:
-    from .local_settings import  *
+    from .local_settings import *
 except ImportError:
     pass

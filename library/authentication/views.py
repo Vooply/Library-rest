@@ -1,6 +1,4 @@
-from django.http import HttpResponseRedirect
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
-from rest_framework.permissions import AllowAny
 
 from authentication.models import CustomUser
 from authentication.serializers import UserSerializer, RegistrationSerializer
@@ -22,10 +20,5 @@ class ListUserView(ListAPIView):
 
 class CreateUserView(CreateAPIView):
     queryset = CustomUser.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAdmin,)
     serializer_class = RegistrationSerializer
-
-
-def logout(request):
-    request.session.flush()
-    return HttpResponseRedirect('/')
