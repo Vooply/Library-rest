@@ -18,7 +18,12 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+#     path('api/v1/auth/', include('rest_framework.urls')),
+    path('api/v1/book/', include('book.urls')),
+    path('api/v1/author/', include('author.urls')),
+
     path('users/', include('authentication.urls', namespace='users')),
-    path('books/', include('book.views', namespace='books')),
-    path('orders/', include('order.urls', namespace='orders')),
+#     path('books/', include('book.views', namespace='books')),
+    path('orders/', include('order.urls', namespace='orders'),
 ]
