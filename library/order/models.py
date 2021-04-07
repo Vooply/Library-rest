@@ -1,4 +1,5 @@
 from django.db import models, DataError, IntegrityError
+from django.utils import timezone
 
 from authentication.models import CustomUser
 from author.models import Author
@@ -6,12 +7,16 @@ from book.models import Book
 import datetime
 
 
+def get_plated_end():
+    return timezone.now() + timezone.timedelta(days=15)
+
+
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     end_at = models.DateTimeField(null=True)
     plated_end_at = models.DateTimeField(null=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, related_name='orders')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True, related_name='book')
 
     def __str__(self):
         """
@@ -39,7 +44,9 @@ class Order(models.Model):
         }
 
     @staticmethod
-    def create(user, book, plated_end_at):
+    def create(user, book, plated_end_at=None):
+        if plated_end_at is None:
+            plated_end_at = timezone.now() + timezone.timedelta(days=15)
 
         try:
             if book.count <= 1:
