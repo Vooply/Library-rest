@@ -1,6 +1,6 @@
 from django.db import models, IntegrityError, DataError
-from author.models import Author
 
+from author.models import Author
 
 
 class Book(models.Model):
@@ -20,8 +20,7 @@ class Book(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True)
     count = models.IntegerField(default=10)
-    authors = models.ManyToManyField(Author, related_name='author_books')
-    
+    authors = models.ManyToManyField(Author, related_name='author_books')    
 
     def __str__(self):
         """
