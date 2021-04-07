@@ -1,19 +1,21 @@
 from rest_framework import generics
+
+from common.permissions import IsAdmin, IsAdminOrReadOnly
 from .models import Author
-from .serializers import AuthorDetailSerializer, AuthorListSerializer
-from .permissions import IsOwnerOrReadOnly
-from rest_framework.permissions import IsAuthenticated
+from .serializers import AuthorSerializer
 
 
 class AuthorListView(generics.ListAPIView):
     queryset = Author.objects.all()
-    serializer_class = AuthorListSerializer
-    permission_classes = (IsAuthenticated, )
+    serializer_class = AuthorSerializer
+
 
 class AuthorCreateView(generics.CreateAPIView):
-    serializer_class = AuthorDetailSerializer
+    serializer_class = AuthorSerializer
+    permission_classes = (IsAdmin,)
+
 
 class AuthorUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.all()
-    serializer_class = AuthorDetailSerializer
-    permission_classes = (IsOwnerOrReadOnly, )
+    serializer_class = AuthorSerializer
+    permission_classes = (IsAdminOrReadOnly,)

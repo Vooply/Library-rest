@@ -1,15 +1,17 @@
 from rest_framework import serializers
+
+from author.models import Author
 from .models import Book
 
 
-class BookDetailSerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    
-    class Meta:
-        model = Book
-        fields = ('id', 'name', 'description', 'count', 'authors', 'user')
+class BookSerializer(serializers.HyperlinkedModelSerializer):
+    authors = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Author.objects.all(), required=False
+    )
 
-class BookListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ('id', 'name', 'description', 'count', 'authors', 'user')
+        fields = ('id', 'url', 'name', 'description', 'count', 'authors')
+        extra_kwargs = {
+            'url': {'view_name': 'book:book_detail'},
+        }

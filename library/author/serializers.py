@@ -9,7 +9,8 @@ class AuthorDetailSerializer(serializers.ModelSerializer):
         model = Author
         fields = ('id', 'name', 'surname', 'patronymic', 'user')
 
-class AuthorListSerializer(serializers.ModelSerializer):
+
+class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ('id', 'name', 'surname', 'patronymic', 'user')
+        fields = '__all__'

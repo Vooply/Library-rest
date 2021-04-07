@@ -1,39 +1,28 @@
 from rest_framework import generics
-from .models import Book
-from .serializers import BookDetailSerializer, BookListSerializer
-from .permissions import IsOwnerOrReadOnly
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 
+from common.permissions import IsAdmin, IsAdminOrReadOnly
+from .models import Book
+from .serializers import  BookSerializer
 
 
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookListSerializer
-    permission_classes = (IsAuthenticated, )
+    serializer_class = BookSerializer
+
 
 class BookCreateView(generics.CreateAPIView):
-    serializer_class = BookDetailSerializer
+    serializer_class = BookSerializer
+    queryset = Book.objects.all()
+    permission_classes = (IsAdmin,)
+
 
 class BookUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
-    serializer_class = BookDetailSerializer
-    permission_classes = (IsOwnerOrReadOnly, )
-# Create your views here.
-# from django.urls import path
-# from rest_framework.routers import DefaultRouter
-# from rest_framework.serializers import ModelSerializer
-# from rest_framework.viewsets import ModelViewSet
+    serializer_class = BookSerializer
+    permission_classes = (IsAdminOrReadOnly,)
 
-# from book.models import Book
-# from order.views import OrderCreateView
 
-#
-# class BookSerializer(ModelSerializer):
-#     class Meta:
-#         model = Book
-#         fields = '__all__'
-#
-#
 # class BookViewSet(ModelViewSet):
 #     queryset = Book.objects.all()
 #     serializer_class = BookSerializer
